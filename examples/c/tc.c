@@ -64,6 +64,14 @@ int main(int argc, char **argv)
 
 	printf("Successfully started! Please run `sudo cat /sys/kernel/debug/tracing/trace_pipe` "
 	       "to see output of the BPF program.\n");
+	
+	struct bpf_map* fd = skel->maps.rap_sid;
+	// 准备要插入的键值对
+    __u16 key = 42;
+    char value[] = "01234567"; // 16字节的字符串
+
+    // 插入键值对到BPF Map
+    bpf_map__update_elem(fd, &key,2, value, 8,BPF_ANY);
 
 	while (!exiting) {
 		fprintf(stderr, ".");
